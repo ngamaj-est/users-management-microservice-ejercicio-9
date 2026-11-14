@@ -42,40 +42,44 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(
-    controllers = UserRestController.class,
-    properties = "spring.main.web-application-type=servlet")
+@WebMvcTest(controllers = UserRestController.class, properties = "spring.main.web-application-type=servlet")
 @Import({
-  SecurityConfig.class,
-  JwtAuthenticationFilter.class,
-  RestAuthenticationEntryPoint.class,
-  RestAccessDeniedHandler.class
+    SecurityConfig.class,
+    JwtAuthenticationFilter.class,
+    RestAuthenticationEntryPoint.class,
+    RestAccessDeniedHandler.class
 })
 @DisplayName("UserRestController")
 class UserRestControllerTest {
 
   private static final String ID = "8f684dc4-0c67-4813-8d58-7b5e7f7937b8";
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-  @MockBean private CreateUserUseCase createUserUseCase;
-  @MockBean private UpdateUserUseCase updateUserUseCase;
-  @MockBean private DeleteUserUseCase deleteUserUseCase;
-  @MockBean private GetUserByIdUseCase getUserByIdUseCase;
-  @MockBean private GetAllUsersUseCase getAllUsersUseCase;
-  @MockBean private JwtTokenService jwtTokenService;
+  @MockBean
+  private CreateUserUseCase createUserUseCase;
+  @MockBean
+  private UpdateUserUseCase updateUserUseCase;
+  @MockBean
+  private DeleteUserUseCase deleteUserUseCase;
+  @MockBean
+  private GetUserByIdUseCase getUserByIdUseCase;
+  @MockBean
+  private GetAllUsersUseCase getAllUsersUseCase;
+  @MockBean
+  private JwtTokenService jwtTokenService;
 
   @Test
   @DisplayName("GET /api/users debe retornar todos los usuarios")
   void shouldGetAllUsersThroughSpringMvc() throws Exception {
-    final UserModel user =
-        new UserModel(
-            new UserId(ID),
-            new UserName("Ada Lovelace"),
-            new UserEmail("ada@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+    final UserModel user = new UserModel(
+        new UserId(ID),
+        new UserName("Ada Lovelace"),
+        new UserEmail("ada@example.com"),
+        UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
+        UserRole.ADMIN,
+        UserStatus.ACTIVE);
     when(getAllUsersUseCase.execute()).thenReturn(List.of(user));
     when(jwtTokenService.parse("valid-token")).thenReturn(new JwtPrincipal(ID, UserRole.REVIEWER));
 
@@ -89,11 +93,11 @@ class UserRestControllerTest {
         .andExpect(jsonPath("$[0].status").value("ACTIVE"));
   }
 
+  @SuppressWarnings("null")
   @Test
   @DisplayName("POST /api/users debe crear un usuario válido")
   void shouldCreateUserThroughSpringMvc() throws Exception {
-    final String request =
-        """
+    final String request = """
         {
           "id": "%s",
           "name": "Ada Lovelace",
@@ -102,16 +106,15 @@ class UserRestControllerTest {
           "role": "ADMIN"
         }
         """.formatted(ID);
-    final UserModel user =
-        new UserModel(
-            new UserId(ID),
-            new UserName("Ada Lovelace"),
-            new UserEmail("ada@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+    final UserModel user = new UserModel(
+        new UserId(ID),
+        new UserName("Ada Lovelace"),
+        new UserEmail("ada@example.com"),
+        UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
+        UserRole.ADMIN,
+        UserStatus.ACTIVE);
     when(createUserUseCase.execute(
-            new CreateUserCommand(ID, "Ada Lovelace", "ada@example.com", "Secure123!", "ADMIN")))
+        new CreateUserCommand(ID, "Ada Lovelace", "ada@example.com", "Secure123!", "ADMIN")))
         .thenReturn(user);
 
     mockMvc
@@ -120,12 +123,12 @@ class UserRestControllerTest {
         .andExpect(jsonPath("$.id").value(ID));
   }
 
+  @SuppressWarnings("null")
   @Test
   @WithMockUser(roles = "ADMIN")
   @DisplayName("PUT /api/users/{id} debe actualizar un usuario")
   void shouldUpdateUserThroughSpringMvc() throws Exception {
-    final String request =
-        """
+    final String request = """
         {
           "name": "Ada Byron",
           "email": "ada.byron@example.com",
@@ -134,22 +137,21 @@ class UserRestControllerTest {
           "status": "ACTIVE"
         }
         """;
-    final UserModel user =
-        new UserModel(
-            new UserId(ID),
-            new UserName("Ada Byron"),
-            new UserEmail("ada.byron@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
-            UserRole.REVIEWER,
-            UserStatus.ACTIVE);
+    final UserModel user = new UserModel(
+        new UserId(ID),
+        new UserName("Ada Byron"),
+        new UserEmail("ada.byron@example.com"),
+        UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
+        UserRole.REVIEWER,
+        UserStatus.ACTIVE);
     when(updateUserUseCase.execute(
-            new UpdateUserCommand(
-                ID,
-                "Ada Byron",
-                "ada.byron@example.com",
-                "NewSecure123!",
-                "REVIEWER",
-                "ACTIVE")))
+        new UpdateUserCommand(
+            ID,
+            "Ada Byron",
+            "ada.byron@example.com",
+            "NewSecure123!",
+            "REVIEWER",
+            "ACTIVE")))
         .thenReturn(user);
 
     mockMvc
@@ -172,14 +174,13 @@ class UserRestControllerTest {
   @DisplayName("GET /api/users/{id} debe responder usando el caso de uso inyectado por Spring")
   void shouldGetUserByIdThroughSpringMvc() throws Exception {
     // Arrange
-    final UserModel user =
-        new UserModel(
-            new UserId(ID),
-            new UserName("Ada Lovelace"),
-            new UserEmail("ada@example.com"),
-            UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
-            UserRole.ADMIN,
-            UserStatus.ACTIVE);
+    final UserModel user = new UserModel(
+        new UserId(ID),
+        new UserName("Ada Lovelace"),
+        new UserEmail("ada@example.com"),
+        UserPassword.fromHash("$2a$12$abcdefghijklmnopqrstuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"),
+        UserRole.ADMIN,
+        UserStatus.ACTIVE);
     when(getUserByIdUseCase.execute(new GetUserByIdQuery(ID))).thenReturn(user);
 
     // Act & Assert
@@ -193,12 +194,12 @@ class UserRestControllerTest {
         .andExpect(jsonPath("$.status").value("ACTIVE"));
   }
 
+  @SuppressWarnings("null")
   @Test
   @DisplayName("POST /api/users debe rechazar una solicitud inválida antes del caso de uso")
   void shouldRejectInvalidCreateRequest() throws Exception {
     // Arrange
-    final String invalidRequest =
-        """
+    final String invalidRequest = """
         {
           "id": "",
           "name": "A",

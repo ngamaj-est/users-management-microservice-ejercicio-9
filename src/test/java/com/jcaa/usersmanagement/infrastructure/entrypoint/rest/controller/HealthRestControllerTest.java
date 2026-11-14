@@ -20,17 +20,19 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = HealthRestController.class,
-    properties = "spring.main.web-application-type=servlet")
+@WebMvcTest(controllers = HealthRestController.class, properties = "spring.main.web-application-type=servlet")
 @MockBean(JwtTokenService.class)
-@Import({SecurityConfig.class, JwtAuthenticationFilter.class,
+@Import({ SecurityConfig.class, JwtAuthenticationFilter.class,
     RestAuthenticationEntryPoint.class, RestAccessDeniedHandler.class,
-    ProjectInfoAutoConfiguration.class})
+    ProjectInfoAutoConfiguration.class })
 class HealthRestControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-  @Autowired private BuildProperties buildProperties;
+  @Autowired
+  private MockMvc mockMvc;
+  @Autowired
+  private BuildProperties buildProperties;
 
+  @SuppressWarnings("null")
   @Test
   void shouldReturnHealthAndBuildMetadataWithoutAuthentication() throws Exception {
     mockMvc.perform(get("/health"))

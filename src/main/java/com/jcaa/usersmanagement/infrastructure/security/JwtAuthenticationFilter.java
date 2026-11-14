@@ -28,6 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     this.jwtTokenService = jwtTokenService;
   }
 
+  @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(
       final HttpServletRequest request,
@@ -48,10 +49,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private void authenticate(final String token) {
     try {
       final JwtPrincipal principal = jwtTokenService.parse(token);
-      final SimpleGrantedAuthority authority =
-          new SimpleGrantedAuthority(ROLE_PREFIX + principal.role().name());
-      final UsernamePasswordAuthenticationToken authentication =
-          new UsernamePasswordAuthenticationToken(principal.userId(), null, List.of(authority));
+      final SimpleGrantedAuthority authority = new SimpleGrantedAuthority(ROLE_PREFIX + principal.role().name());
+      final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+          principal.userId(), null, List.of(authority));
       SecurityContextHolder.getContext().setAuthentication(authentication);
     } catch (final JwtException | DomainException | IllegalArgumentException ignored) {
       SecurityContextHolder.clearContext();
