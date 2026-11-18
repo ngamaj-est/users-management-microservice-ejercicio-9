@@ -1,0 +1,107 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - create-ci/cd-github
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =========================================================================
+  # CI (Continuous Integration): Build, Unit Test, Code Coverage, and Package
+  # =========================================================================
+  build-and-test:
+    name: Build & Test (CI)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Grant execute permission for Maven Wrapper
+        run: chmod +x mvnw
+
+      - name: Compile, run tests, and generate JaCoCo coverage
+        run: ./mvnw clean verify --batch-mode --no-transfer-progress
+
+      - name: Upload Surefire Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: surefire-test-results
+          path: target/surefire-reports/
+          if-no-files-found: warn
+
+      - name: Upload JaCoCo Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-coverage-report
+          path: target/site/jacoco/
+          if-no-files-found: warn
+
+      - name: Upload Application JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: users-management-jar
+          path: target/*.jar
+          if-no-files-found: error
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Verify Docker image build
+        run: docker build -t users-management-microservice:${{ github.sha }} .
+
+  # =========================================================================
+  # CD (Continuous Deployment): Automated Deployment to Render
+  # =========================================================================
+  deploy:
+    name: Deploy to Render (CD)
+    needs: [build-and-test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deployment via Deploy Hook
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Triggering deployment on Render via Deploy Hook..."
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$RENDER_DEPLOY_HOOK")
+            if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+              echo "Deployment triggered successfully on Render (HTTP status: $HTTP_STATUS)"
+            else
+              echo "ERROR: Failed to trigger Render deployment. HTTP status: $HTTP_STATUS"
+              exit 1
+            fi
+          else
+            echo "===================================================================="
+            echo "INFO: Secret RENDER_DEPLOY_HOOK_URL is not defined in GitHub Secrets."
+            echo "If Render is linked to GitHub with 'autoDeployTrigger: commit',"
+            echo "Render deploys automatically when commits are merged into 'main'."
+            echo "To trigger deployment directly through GitHub Actions, add your Render"
+            echo "Deploy Hook URL as RENDER_DEPLOY_HOOK_URL under:"
+            echo "Repository Settings -> Secrets and variables -> Actions."
+            echo "===================================================================="
+          fi
