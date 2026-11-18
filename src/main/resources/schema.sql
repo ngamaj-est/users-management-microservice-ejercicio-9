@@ -4,7 +4,6 @@
 -- =============================================
 
 CREATE DATABASE IF NOT EXISTS ejercicio_9_enfermedades
-    COLLATE utf8mb4_unicode_ci;
 
 USE ejercicio_9_enfermedades;
 
