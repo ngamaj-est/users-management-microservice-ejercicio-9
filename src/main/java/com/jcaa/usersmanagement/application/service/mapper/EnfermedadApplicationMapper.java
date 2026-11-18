@@ -4,6 +4,7 @@ import com.jcaa.usersmanagement.application.service.dto.command.CreateEnfermedad
 import com.jcaa.usersmanagement.application.service.dto.command.DeleteEnfermedadCommand;
 import com.jcaa.usersmanagement.application.service.dto.command.UpdateEnfermedadCommand;
 import com.jcaa.usersmanagement.application.service.dto.query.GetEnfermedadByIdQuery;
+import com.jcaa.usersmanagement.application.service.dto.query.GetEnfermedadByNombreQuery;
 import com.jcaa.usersmanagement.domain.model.EnfermedadModel;
 import com.jcaa.usersmanagement.domain.valueobject.EnfermedadId;
 import com.jcaa.usersmanagement.domain.valueobject.Medicamentos;
@@ -48,5 +49,9 @@ public class EnfermedadApplicationMapper {
 
   public EnfermedadId fromQueryToEnfermedadId(final GetEnfermedadByIdQuery query) {
     return new EnfermedadId(query.id());
+  }
+
+  public NombreEnfermedad fromQueryToNombreEnfermedad(final GetEnfermedadByNombreQuery query) {
+    return new NombreEnfermedad(query.nombre());
   }
 }
