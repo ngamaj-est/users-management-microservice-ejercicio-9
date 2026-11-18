@@ -3,7 +3,7 @@
 -- Gestión de Usuarios - Arquitectura Hexagonal
 -- =============================================
 
-CREATE DATABASE IF NOT EXISTS ejercicio_9_enfermedades
+CREATE DATABASE IF NOT EXISTS Enfermedades_db
 
 USE ejercicio_9_enfermedades;
 
