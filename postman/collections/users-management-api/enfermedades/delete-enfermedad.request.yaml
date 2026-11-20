@@ -1,0 +1,20 @@
+$kind: http-request
+name: Delete Enfermedad
+order: 5000
+method: DELETE
+url: '{{base_url}}/api/enfermedades/{{enfermedad_id}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Delete enfermedad - status 204", function () {
+        pm.response.to.have.status(204);
+      });
+
+      pm.test("Response body is empty", function () {
+        pm.expect(pm.response.text()).to.be.empty;
+      });
+
+      // Clear the saved enfermedad_id
+      pm.environment.unset("enfermedad_id");
+      console.log("Enfermedad deleted and enfermedad_id cleared.");

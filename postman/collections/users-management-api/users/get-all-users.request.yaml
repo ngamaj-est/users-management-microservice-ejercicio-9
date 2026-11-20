@@ -1,0 +1,21 @@
+$kind: http-request
+name: Get All Users
+order: 2000
+method: GET
+url: '{{base_url}}/api/users'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Get all users - status 200", function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.test("Response is an array", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.be.an("array");
+      });
+
+      pm.test("Response time is acceptable", function () {
+        pm.expect(pm.response.responseTime).to.be.below(2000);
+      });
