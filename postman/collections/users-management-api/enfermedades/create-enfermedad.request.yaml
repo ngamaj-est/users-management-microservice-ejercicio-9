@@ -1,0 +1,50 @@
+$kind: http-request
+name: Create Enfermedad
+order: 1000
+method: POST
+url: '{{base_url}}/api/enfermedades'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "Gripe",
+      "nombreCientifico": "Influenza",
+      "nivelGravedad": "LEVE",
+      "sintomas": "Fiebre, tos, dolor de cabeza, congestion nasal",
+      "medicamentos": "Paracetamol, Ibuprofeno",
+      "esContagiosa": true,
+      "esCubiertaPorPos": true,
+      "requiereIncapacidad": false
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Create enfermedad - status 201", function () {
+        pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has id", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("id");
+      });
+
+      pm.test("Response has correct nombre", function () {
+        const json = pm.response.json();
+        pm.expect(json.nombre).to.eql("Gripe");
+      });
+
+      pm.test("esContagiosa is true", function () {
+        const json = pm.response.json();
+        pm.expect(json.esContagiosa).to.be.true;
+      });
+
+      // Save enfermedad id for subsequent requests
+      const json = pm.response.json();
+      if (json.id) {
+        pm.environment.set("enfermedad_id", json.id);
+        console.log("Enfermedad ID saved: " + json.id);
+      }
