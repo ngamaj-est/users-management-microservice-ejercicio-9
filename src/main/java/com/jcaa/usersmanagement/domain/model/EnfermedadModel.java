@@ -7,10 +7,12 @@ import com.jcaa.usersmanagement.domain.valueobject.NivelGravedadVO;
 import com.jcaa.usersmanagement.domain.valueobject.NombreCientifico;
 import com.jcaa.usersmanagement.domain.valueobject.NombreEnfermedad;
 import com.jcaa.usersmanagement.domain.valueobject.Sintomas;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
 @Value
+@AllArgsConstructor
 @Builder(toBuilder = true)
 public class EnfermedadModel {
 
