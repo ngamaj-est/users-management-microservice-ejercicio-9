@@ -1,23 +1,22 @@
 $kind: http-request
 name: Login
+description: ""
 order: 1000
 method: POST
-url: '{{base_url}}/api/auth/login'
+url: "{{base_url}}/api/auth/login"
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 auth:
   type: noauth
 body:
   type: json
   content: |-
     {
-      "email": "admin@example.com",
-      "password": "password123"
+      "email": "admin@mail.com",
+      "password": "$2y$10$C0MqFsCUQ4UZJgz.fl56KOylFnDrCaCclQp7k.pHQrnvwE/sahf0e"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Login successful - status 200", function () {
         pm.response.to.have.status(200);
@@ -40,3 +39,4 @@ scripts:
         pm.environment.set("token", json.token);
         console.log("Token saved to environment.");
       }
+    language: text/javascript
