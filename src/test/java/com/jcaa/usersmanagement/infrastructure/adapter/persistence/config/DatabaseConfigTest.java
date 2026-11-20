@@ -26,6 +26,6 @@ class DatabaseConfigTest {
     assertThat(jdbcUrl)
         .isEqualTo(
             "jdbc:mysql://mysql.example.com:15425/crud_usuarios"
-                + "?sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true");
+                + "?sslMode=REQUIRED&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true");
   }
 }

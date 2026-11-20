@@ -3,9 +3,9 @@
 -- Gestión de Usuarios - Arquitectura Hexagonal
 -- =============================================
 
-CREATE DATABASE IF NOT EXISTS Enfermedades_db
+CREATE DATABASE IF NOT EXISTS Enfermedades_db;
 
-USE ejercicio_9_enfermedades;
+USE Enfermedades_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id          VARCHAR(36)  NOT NULL PRIMARY KEY,
@@ -49,4 +49,4 @@ VALUES
     ('Varicela', 'Varicella zoster', 'Moderada', 'Erupción cutánea, picazón, fiebre', 'Aciclovir, Antihistamínicos', TRUE, TRUE, TRUE),
     ('Hipertensión arterial', 'Hipertensión esencial', 'Moderada', 'Dolor de cabeza, mareo, zumbido en los oídos', 'Losartán, Enalapril', FALSE, TRUE, FALSE),
     ('Diabetes tipo 2', 'Diabetes mellitus tipo 2', 'Grave', 'Sed excesiva, fatiga, visión borrosa', 'Metformina, Insulina', FALSE, TRUE, TRUE),
-    ('Resfriado común', 'Rhinovirus', 'Leve', 'Estornudos, congestión nasal, malestar leve', 'Descongestionante, Vitamina C', TRUE, FALSE, FALSE)
+    ('Resfriado común', 'Rhinovirus', 'Leve', 'Estornudos, congestión nasal, malestar leve', 'Descongestionante, Vitamina C', TRUE, FALSE, FALSE);
