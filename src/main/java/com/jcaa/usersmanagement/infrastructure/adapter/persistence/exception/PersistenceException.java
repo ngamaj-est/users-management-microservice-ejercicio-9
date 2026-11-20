@@ -45,4 +45,38 @@ public final class PersistenceException extends RuntimeException {
   public static PersistenceException becauseConnectionFailed(final Throwable cause) {
     return new PersistenceException(MESSAGE_CONNECTION, cause);
   }
+
+  public static PersistenceException becauseSaveEnfermedadFailed(
+      final String nombre, final Throwable cause) {
+    return new PersistenceException(
+        String.format("Failed to save enfermedad with nombre: '%s'.", nombre), cause);
+  }
+
+  public static PersistenceException becauseUpdateEnfermedadFailed(
+      final Long id, final Throwable cause) {
+    return new PersistenceException(
+        String.format("Failed to update enfermedad with ID: '%d'.", id), cause);
+  }
+
+  public static PersistenceException becauseFindEnfermedadByIdFailed(
+      final Long id, final Throwable cause) {
+    return new PersistenceException(
+        String.format("Failed to find enfermedad with ID: '%d'.", id), cause);
+  }
+
+  public static PersistenceException becauseFindEnfermedadByNombreFailed(
+      final String nombre, final Throwable cause) {
+    return new PersistenceException(
+        String.format("Failed to find enfermedad with nombre: '%s'.", nombre), cause);
+  }
+
+  public static PersistenceException becauseFindAllEnfermedadesFailed(final Throwable cause) {
+    return new PersistenceException("Failed to retrieve all enfermedades.", cause);
+  }
+
+  public static PersistenceException becauseDeleteEnfermedadFailed(
+      final Long id, final Throwable cause) {
+    return new PersistenceException(
+        String.format("Failed to delete enfermedad with ID: '%d'.", id), cause);
+  }
 }
