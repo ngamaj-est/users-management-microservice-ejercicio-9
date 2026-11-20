@@ -1,6 +1,8 @@
 package com.jcaa.usersmanagement.infrastructure.entrypoint.rest.advice;
 
 import com.jcaa.usersmanagement.domain.exception.DomainException;
+import com.jcaa.usersmanagement.domain.exception.EnfermedadAlreadyExistsException;
+import com.jcaa.usersmanagement.domain.exception.EnfermedadNotFoundException;
 import com.jcaa.usersmanagement.domain.exception.InvalidCredentialsException;
 import com.jcaa.usersmanagement.domain.exception.UserAlreadyExistsException;
 import com.jcaa.usersmanagement.domain.exception.UserNotFoundException;
@@ -27,6 +29,18 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(UserAlreadyExistsException.class)
   @ResponseStatus(HttpStatus.CONFLICT)
   public ApiErrorResponse handleUserAlreadyExists(final UserAlreadyExistsException exception) {
+    return new ApiErrorResponse(HttpStatus.CONFLICT.value(), exception.getMessage());
+  }
+
+  @ExceptionHandler(EnfermedadNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ApiErrorResponse handleEnfermedadNotFound(final EnfermedadNotFoundException exception) {
+    return new ApiErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+  }
+
+  @ExceptionHandler(EnfermedadAlreadyExistsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public ApiErrorResponse handleEnfermedadAlreadyExists(final EnfermedadAlreadyExistsException exception) {
     return new ApiErrorResponse(HttpStatus.CONFLICT.value(), exception.getMessage());
   }
 
