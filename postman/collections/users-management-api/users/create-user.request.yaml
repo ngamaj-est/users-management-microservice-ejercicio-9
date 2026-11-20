@@ -1,0 +1,47 @@
+$kind: http-request
+name: Create User
+order: 1000
+method: POST
+url: '{{base_url}}/api/users'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "id": "usr-001",
+      "name": "Nathan Gama",
+      "email": "nathan@example.com",
+      "password": "password123",
+      "role": "ADMIN"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("User created - status 201", function () {
+        pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has user id", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("id");
+      });
+
+      pm.test("Response has correct name", function () {
+        const json = pm.response.json();
+        pm.expect(json.name).to.eql("Nathan Gama");
+      });
+
+      pm.test("Response has correct email", function () {
+        const json = pm.response.json();
+        pm.expect(json.email).to.eql("nathan@example.com");
+      });
+
+      // Save user id for subsequent requests
+      const json = pm.response.json();
+      if (json.id) {
+        pm.environment.set("user_id", json.id);
+        console.log("User ID saved: " + json.id);
+      }

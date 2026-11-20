@@ -1,0 +1,8 @@
+$kind: collection
+name: Users Management API
+description: 'CRUD tests for the Users and Enfermedades endpoints of the users-management-microservice. Run requests in order: Auth first to get a token, then Users and Enfermedades.'
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
