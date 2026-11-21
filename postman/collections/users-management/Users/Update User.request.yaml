@@ -1,11 +1,8 @@
 $kind: http-request
-name: 'Update User'
+url: "{{base_url}}/api/users/{{user_id}}"
 method: PUT
-url: '{{base_url}}/api/users/{{user_id}}'
-order: 4000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -16,3 +13,4 @@ body:
       "role": "REVIEWER",
       "status": "ACTIVE"
     }
+order: 4000

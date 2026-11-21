@@ -1,5 +1,0 @@
-$kind: http-request
-name: 'Delete Enfermedad'
-method: DELETE
-url: '{{base_url}}/api/enfermedades/{{enfermedad_id}}'
-order: 6000

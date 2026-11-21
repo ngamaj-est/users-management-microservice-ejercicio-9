@@ -6,7 +6,9 @@ description: |-
   - GET /api/users, GET /api/users/{id} — requires ADMIN or REVIEWER role
   - PUT /api/users/{id}, DELETE /api/users/{id} — requires ADMIN role
 auth:
-  type: bearer
-  credentials:
-    - key: token
-      value: '{{token}}'
+  - id: 970bfcf1-401c-4639-9a51-cd79c2bc1bce
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"
+order: 4000

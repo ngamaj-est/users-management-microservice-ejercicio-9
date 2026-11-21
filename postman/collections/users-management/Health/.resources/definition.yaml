@@ -1,3 +1,4 @@
 $kind: collection
 name: Health
 description: Public health-check endpoint. No authentication required.
+order: 3000

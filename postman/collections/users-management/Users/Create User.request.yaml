@@ -1,13 +1,8 @@
 $kind: http-request
-name: 'Create User'
+url: "{{base_url}}/api/users"
 method: POST
-url: '{{base_url}}/api/users'
-order: 1000
-auth:
-  type: noauth
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -18,12 +13,15 @@ body:
       "password": "Password1!",
       "role": "MEMBER"
     }
+auth:
+  type: noauth
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       const json = pm.response.json();
       if (pm.response.code === 201 && json.id) {
           pm.environment.set("user_id", json.id);
           console.log("user_id saved: " + json.id);
       }
+    language: text/javascript
+order: 1000

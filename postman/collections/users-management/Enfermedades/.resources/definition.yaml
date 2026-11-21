@@ -5,7 +5,9 @@ description: |-
   - GET /api/enfermedades, GET /api/enfermedades/{id}, GET /api/enfermedades/nombre/{nombre} — requires ADMIN or REVIEWER role
   - POST /api/enfermedades, PUT /api/enfermedades/{id}, DELETE /api/enfermedades/{id} — requires ADMIN role
 auth:
-  type: bearer
-  credentials:
-    - key: token
-      value: '{{token}}'
+  - id: f3e69fec-58ca-42c2-97ea-2be10dd95dbd
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"
+order: 2000

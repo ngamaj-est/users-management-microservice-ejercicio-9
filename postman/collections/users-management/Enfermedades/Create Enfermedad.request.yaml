@@ -1,11 +1,8 @@
 $kind: http-request
-name: 'Create Enfermedad'
+url: "{{base_url}}/api/enfermedades"
 method: POST
-url: '{{base_url}}/api/enfermedades'
-order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -21,10 +18,11 @@ body:
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       const json = pm.response.json();
       if (pm.response.code === 201 && json.id) {
           pm.environment.set("enfermedad_id", json.id);
           console.log("enfermedad_id saved: " + json.id);
       }
+    language: text/javascript
+order: 1000

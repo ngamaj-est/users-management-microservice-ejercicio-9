@@ -1,5 +1,4 @@
 $kind: http-request
-name: Get Enfermedad by Nombre
-method: GET
 url: "{{base_url}}/api/enfermedades/nombre/Asma"
+method: GET
 order: 4000

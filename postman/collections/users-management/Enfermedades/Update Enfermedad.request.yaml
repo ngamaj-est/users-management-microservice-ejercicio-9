@@ -1,11 +1,8 @@
 $kind: http-request
-name: 'Update Enfermedad'
+url: "{{base_url}}/api/enfermedades/{{enfermedad_id}}"
 method: PUT
-url: '{{base_url}}/api/enfermedades/{{enfermedad_id}}'
-order: 5000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
@@ -19,3 +16,4 @@ body:
       "esCubiertaPorPos": true,
       "requiereIncapacidad": true
     }
+order: 5000
