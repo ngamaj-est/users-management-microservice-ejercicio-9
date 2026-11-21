@@ -1,0 +1,5 @@
+$kind: http-request
+name: 'Get All Enfermedades'
+method: GET
+url: '{{base_url}}/api/enfermedades'
+order: 2000

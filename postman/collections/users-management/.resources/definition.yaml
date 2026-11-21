@@ -1,0 +1,22 @@
+$kind: collection
+name: Users Management API
+description: |-
+  REST API for the Users Management microservice (Spring Boot, Hexagonal Architecture + DDD).
+
+  Covers:
+  - Health check (public)
+  - Authentication — login and JWT token management
+  - Users CRUD (POST public; GET/PUT/DELETE require ADMIN or REVIEWER role)
+  - Enfermedades CRUD (GET requires ADMIN or REVIEWER; POST/PUT/DELETE require ADMIN)
+
+  Set `base_url` in the environment to `http://localhost:8080` before running locally.
+  After a successful login the `token` variable is saved automatically.
+variables:
+  base_url: ""
+  token: ""
+  enfermedad_id: ""
+  "user_id\n": ""
+auth:
+  - id: b5b516fd-c322-4a8d-a4af-a257245cd83f
+    type: bearer
+    name: Bearer Token

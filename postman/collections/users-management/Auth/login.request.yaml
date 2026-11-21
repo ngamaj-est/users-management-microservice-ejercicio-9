@@ -1,0 +1,23 @@
+$kind: http-request
+name: Login
+method: POST
+url: "{{base_url}}/api/auth/login"
+order: 1000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "admin@mail.com",
+      "password": "admin123456789"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 200 && json.token) {
+          pm.environment.set("token", json.token);
+          console.log("Token saved to environment variable 'token'.");
+      }
+    language: text/javascript

@@ -1,0 +1,11 @@
+$kind: collection
+name: Enfermedades
+description: |-
+  CRUD operations for Enfermedades (diseases).
+  - GET /api/enfermedades, GET /api/enfermedades/{id}, GET /api/enfermedades/nombre/{nombre} — requires ADMIN or REVIEWER role
+  - POST /api/enfermedades, PUT /api/enfermedades/{id}, DELETE /api/enfermedades/{id} — requires ADMIN role
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'

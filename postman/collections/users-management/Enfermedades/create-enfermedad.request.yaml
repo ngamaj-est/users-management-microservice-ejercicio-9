@@ -1,0 +1,30 @@
+$kind: http-request
+name: 'Create Enfermedad'
+method: POST
+url: '{{base_url}}/api/enfermedades'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "Asma",
+      "nombreCientifico": "Asthma bronchiale",
+      "nivelGravedad": "Moderada",
+      "sintomas": "Dificultad para respirar, sibilancias, opresión en el pecho, tos",
+      "medicamentos": "Salbutamol, Budesonida",
+      "esContagiosa": false,
+      "esCubiertaPorPos": true,
+      "requiereIncapacidad": false
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      const json = pm.response.json();
+      if (pm.response.code === 201 && json.id) {
+          pm.environment.set("enfermedad_id", json.id);
+          console.log("enfermedad_id saved: " + json.id);
+      }

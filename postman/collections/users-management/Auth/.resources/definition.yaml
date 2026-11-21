@@ -1,0 +1,3 @@
+$kind: collection
+name: Auth
+description: Authentication endpoints. Login returns a JWT Bearer token that is automatically saved to the `token` environment variable.

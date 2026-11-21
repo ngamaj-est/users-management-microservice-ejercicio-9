@@ -1,0 +1,12 @@
+$kind: collection
+name: Users
+description: |-
+  CRUD operations for users.
+  - POST /api/users — public (no auth required)
+  - GET /api/users, GET /api/users/{id} — requires ADMIN or REVIEWER role
+  - PUT /api/users/{id}, DELETE /api/users/{id} — requires ADMIN role
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'

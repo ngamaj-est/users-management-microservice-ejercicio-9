@@ -1,0 +1,21 @@
+$kind: http-request
+name: 'Update Enfermedad'
+method: PUT
+url: '{{base_url}}/api/enfermedades/{{enfermedad_id}}'
+order: 5000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "Asma Bronquial",
+      "nombreCientifico": "Asthma bronchiale",
+      "nivelGravedad": "Grave",
+      "sintomas": "Dificultad para respirar, sibilancias, opresión en el pecho, tos crónica",
+      "medicamentos": "Salbutamol, Budesonida, Montelukast",
+      "esContagiosa": false,
+      "esCubiertaPorPos": true,
+      "requiereIncapacidad": true
+    }

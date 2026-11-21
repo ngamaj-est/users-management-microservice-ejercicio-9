@@ -1,7 +1,7 @@
 name: Users Management - Local
 values:
   - key: base_url
-    value: ''
+    value: 'http://localhost:8080'
   - key: token
     secret: true
   - key: user_id
