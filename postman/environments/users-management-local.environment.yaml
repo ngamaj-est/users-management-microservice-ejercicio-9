@@ -1,15 +1,10 @@
 name: Users Management - Local
 values:
   - key: base_url
-    value: 'http://localhost:8080'
-    enabled: true
-  - key: token
     value: ''
-    enabled: true
+  - key: token
     secret: true
   - key: user_id
     value: ''
-    enabled: true
   - key: enfermedad_id
     value: ''
-    enabled: true
